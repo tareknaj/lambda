@@ -1,12 +1,27 @@
 org: tareknaj
 app: appserverless
 service: serviceserverless
-
+custom:
+  pythonRequirements:
+    dockerizePip: false
+plugins:
+  - serverless-python-requirements
 provider:
   name: aws
   runtime: python2.7
   environment:
     DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+    DB_HOST: localhost
+    DB_USER: admin
+    DB_PWD: adminadmin
+    DB_NAME: todo_db
+  vpc:
+    securityGroupIds:
+      - X
+    subnetIds:
+      - subnet-X
+      - subnet-X
+      - subnet-X
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -26,6 +41,13 @@ functions:
           path: form
           method: post
           cors: true
+  create_mysql:
+    handler: create.create_mysql
+    events:
+      - http:
+          path: form_mysql
+          method: post
+          cors: true
 
   list:
     handler: list.list
@@ -35,11 +57,27 @@ functions:
           method: get
           cors: true
 
+  list_mysql:
+    handler: list.list_mysql
+    events:
+      - http:
+          path: form_mysql
+          method: get
+          cors: true
+
   get:
     handler: get.get
     events:
       - http:
           path: form/{id}
+          method: get
+          cors: true
+
+  get_mysql:
+    handler: get.get_mysql
+    events:
+      - http:
+          path: form_mysql/{id}
           method: get
           cors: true
 
