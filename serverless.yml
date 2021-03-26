@@ -1,4 +1,6 @@
-service: inputform-backend
+org: tareknaj
+app: appserverless
+service: serviceserverless
 
 provider:
   name: aws
